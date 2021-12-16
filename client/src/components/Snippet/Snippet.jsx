@@ -39,12 +39,14 @@ const Snippet = () => {
     ({ queryKey }) => fetchSnippet(queryKey[1])
   );
 
+  //Snippet is editable when user is authorized owner
   useEffect(() => {
     if (data && snippet) {
       if (data.userId === snippet.creatorId) setEditable(true);
     }
   }, [data, snippet]);
 
+  //Snippet is likable when user is logged in
   useEffect(() => {
     if (data) setLikeable(true);
   }, [data]);

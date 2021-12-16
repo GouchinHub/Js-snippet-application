@@ -10,6 +10,7 @@ const verifyUser = require("./middleware");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+/* Get active user's information. */
 router.get("/:token", verifyUser, (req, res) => {
   const user = jwt.decode(req.params.token);
   if (user) {
@@ -21,7 +22,7 @@ router.get("/:token", verifyUser, (req, res) => {
   }
 });
 
-/* Create a user. */
+/* Create a new user. */
 router.post(
   "/register",
   upload.none(),
@@ -36,6 +37,7 @@ router.post(
       if (user) {
         return res.status(403).json({ error: "Username already in use" });
       } else {
+        //hash the password before storing to database
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             if (err) throw err;
@@ -65,6 +67,7 @@ router.post("/login", upload.none(), (req, res, next) => {
         error: "Invalid credentials",
       });
     } else {
+      //decrpyt hashed password and compare to input
       bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
         if (err) throw err;
         if (isMatch) {
@@ -72,6 +75,7 @@ router.post("/login", upload.none(), (req, res, next) => {
             username: user.username,
             userId: user._id,
           };
+          //sign a jwt token for user and return it.
           jwt.sign(jwtPayoload, process.env.SECRET, (err, token) => {
             if (err) throw err;
             const body = {

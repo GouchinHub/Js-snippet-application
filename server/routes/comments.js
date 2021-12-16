@@ -7,7 +7,7 @@ const verifyUser = require("./middleware.js");
 const jwt = require("jsonwebtoken");
 const comments = require("../models/comments.js");
 
-/* GET all comments for snippet. */
+/* GET all comments for a snippet. */
 router.get("/:identifier", function (req, res, next) {
   Comments.find({ snippetId: req.params.identifier }, (err, comments) => {
     if (err) return next(err);
@@ -19,7 +19,7 @@ router.get("/:identifier", function (req, res, next) {
   });
 });
 
-/* POST a comment for snippet. */
+/* POST a comment for a snippet. */
 router.post("/:identifier", verifyUser, function (req, res, next) {
   const token = req.headers["x-access-token"];
   const user = jwt.decode(token);
@@ -70,6 +70,7 @@ router.post("/like/:identifier", verifyUser, function (req, res, next) {
   const user = jwt.decode(token);
   if (!user) return res.status(400).json("unauthorized");
 
+  //Add or remove users id from comments likes
   Comments.findOne({ _id: req.params.identifier }, (err, comment) => {
     if (err) return next(err);
     if (comment) {

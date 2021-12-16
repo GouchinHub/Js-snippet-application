@@ -19,10 +19,12 @@ const Comment = ({ user, comment }) => {
   const [editing, setEditing] = useState(false);
   const [likes, setLikes] = useState(comment.likes.length);
 
+  //comment is likable when user is logged in
   useEffect(() => {
     if (user) setLikeable(true);
   }, [user]);
 
+  //comment is editable when user is authorized owner
   useEffect(() => {
     if (user && comment) {
       if (user.userId === comment.creatorId) return setEditable(true);
@@ -80,7 +82,7 @@ const Comment = ({ user, comment }) => {
     }
   };
 
-  const makeEditable = () => {
+  const changeToEditingMode = () => {
     setEditing(!editing);
   };
 
@@ -91,7 +93,7 @@ const Comment = ({ user, comment }) => {
           <Box m={2} flex={"auto"} display="flex" flexDirection={"row"}>
             {editable && (
               <Box width="10%">
-                <IconButton onClick={(e) => makeEditable()}>
+                <IconButton onClick={(e) => changeToEditingMode()}>
                   <EditIcon color="primary" />
                 </IconButton>
               </Box>

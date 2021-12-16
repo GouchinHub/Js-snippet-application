@@ -17,7 +17,7 @@ router.get("/", function (req, res, next) {
   });
 });
 
-/* GET single snippet. */
+/* GET a single snippet. */
 router.get("/:identifier", function (req, res, next) {
   Snippets.findOne({ _id: req.params.identifier }, (err, snippet) => {
     if (err) return next(err);
@@ -29,7 +29,7 @@ router.get("/:identifier", function (req, res, next) {
   });
 });
 
-/* POST a snippet. */
+/* POST a new snippet. */
 router.post("/", verifyUser, function (req, res, next) {
   const token = req.headers["x-access-token"];
   const user = jwt.decode(token);
@@ -79,6 +79,7 @@ router.post("/like/:identifier", verifyUser, function (req, res, next) {
   const user = jwt.decode(token);
   if (!user) return res.status(400).json("unauthorized");
 
+  //Add or remove users id from snippets likes
   Snippets.findOne({ _id: req.params.identifier }, (err, snippet) => {
     if (err) return next(err);
     if (snippet) {

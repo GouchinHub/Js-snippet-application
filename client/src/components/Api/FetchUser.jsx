@@ -1,3 +1,5 @@
+//Helper function for user authorization
+
 const FetchUser = async () => {
   var token = localStorage.getItem("token");
   if (token === null || token === "") return null;

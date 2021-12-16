@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+//middleware for user authorization
 const verifyUser = (req, res, next) => {
   const token = req.headers["x-access-token"];
 
