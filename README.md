@@ -29,7 +29,7 @@ To get the application running execute the following commands in root folder:
 
 front-end will start in port 3000 and back-end will be run in port 5000.
 
-## Technology choises
+## Technology choices
 
 Express.js was chosen as back-end for quick setup and simple Api implementation. (Also used in the course material).
 
