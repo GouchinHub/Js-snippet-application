@@ -1,6 +1,6 @@
 # Js Snippet Application
-## CT30A3203 Web Applications, course project
-## Author: Aatu Laitinen
+CT30A3203 Web Applications, course project
+Author: Aatu Laitinen
 
 ## Application overview
 
