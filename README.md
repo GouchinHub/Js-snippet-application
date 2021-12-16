@@ -1,5 +1,6 @@
 # Js Snippet Application
 CT30A3203 Web Applications, course project
+
 Author: Aatu Laitinen
 
 ## Application overview
@@ -45,10 +46,15 @@ The source code doesn't include a lot of comments, becouse the code should be se
 ## Features implemented:
 
 Basic features with well written documentation: 25
+
 Users can edit their own comments/posts: 4
+
 Utilization of a frontside framework, React: 5
+
 Use some highlight library for the code snippets, React Syntax Highlighter: 2 
+
 Vote posts and comments (only one vote per user): 3
+
 
 Total points: 39
 
