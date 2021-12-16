@@ -11,7 +11,7 @@ The application allows you to view all the posted snippets, and what people have
 
 You can create a user to post your own snippets, and to comment on yours and others snippets.
 
-As a user you are also able to like helpfull snippets and comments, so other users have an easier time finding usefull snippets!
+As a user you are also able to like helpful snippets and comments, so other users have an easier time finding usefull snippets!
 
 You can also post code other than javascript but keep in mind that the code syntax highlighting only applies to javascript!
 
