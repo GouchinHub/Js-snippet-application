@@ -4,10 +4,12 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var snippetsRouter = require("./routes/snippets");
+var commentsRouter = require("./routes/comments");
 
 const mongoDb = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/snippetdb";
 mongoose.connect(mongoDb);
@@ -27,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/snippets", snippetsRouter);
+app.use("/comments", commentsRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve("..", "client", "build", "index.html")));

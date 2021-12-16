@@ -1,6 +1,7 @@
+import { Box, List } from "@mui/material";
 import React from "react";
 import { useQuery } from "react-query";
-import Snippet from "./Snippet";
+import SnippetListItem from "./SnippetListItem";
 
 const fetchSnippets = async () => {
   const res = await fetch("/snippets");
@@ -9,19 +10,23 @@ const fetchSnippets = async () => {
 
 const SnippetList = () => {
   const { data, status } = useQuery("snippets", fetchSnippets);
-  console.log(data);
+
   return (
-    <div>
+    <Box>
       {status === "loading" && <div>loading...</div>}
       {status === "error" && <div>something went wrong...</div>}
       {status === "success" && (
-        <div>
-          {data.map((snippet) => (
-            <Snippet snippet={snippet} />
-          ))}
-        </div>
+        <Box display={"flex"} justifyContent="center" m={2}>
+          <List
+            sx={{ height: "800px", position: "relative", overflow: "auto" }}
+          >
+            {data.map((snippet) => (
+              <SnippetListItem key={snippet._id} snippet={snippet} />
+            ))}
+          </List>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

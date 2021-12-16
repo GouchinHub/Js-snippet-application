@@ -11,7 +11,5 @@
   },
   "author": "Aatu Laitinen",
   "license": "ISC",
-  "dependencies": {
-    "react-query": "^3.34.2"
-  }
+  "dependencies": {}
 }

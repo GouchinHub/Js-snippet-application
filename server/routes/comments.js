@@ -1,63 +1,54 @@
 var express = require("express");
 var router = express.Router();
 const mongoose = require("mongoose");
+const Comments = require("../models/comments.js");
 const Snippets = require("../models/snippets.js");
 const verifyUser = require("./middleware.js");
 const jwt = require("jsonwebtoken");
+const comments = require("../models/comments.js");
 
-/* GET all snippets. */
-router.get("/", function (req, res, next) {
-  Snippets.find({}, (err, snippets) => {
-    if (err) return next(err);
-    if (snippets) {
-      return res.json(snippets);
-    } else {
-      return res.status(404).send("Not found");
-    }
-  });
-});
-
-/* GET single snippet. */
+/* GET all comments for snippet. */
 router.get("/:identifier", function (req, res, next) {
-  Snippets.findOne({ _id: req.params.identifier }, (err, snippet) => {
+  Comments.find({ snippetId: req.params.identifier }, (err, comments) => {
     if (err) return next(err);
-    if (snippet) {
-      return res.json(snippet);
+    if (comments) {
+      return res.json(comments);
     } else {
       return res.status(404).send("Not found");
     }
   });
 });
 
-/* POST a snippet. */
-router.post("/", verifyUser, function (req, res, next) {
+/* POST a comment for snippet. */
+router.post("/:identifier", verifyUser, function (req, res, next) {
   const token = req.headers["x-access-token"];
   const user = jwt.decode(token);
   if (!user) return res.status(400).send("unauthorized");
 
-  Snippets.findOne({ title: req.body.title }, (err, title) => {
+  Snippets.findOne({ _id: req.params.identifier }, (err, snippet) => {
     if (err) return next(err);
-    if (!title) {
-      new Snippets({
+    if (snippet) {
+      new Comments({
         creatorId: user.userId,
         creator: user.username,
-        title: req.body.title,
-        snippet: req.body.snippet,
+        snippetId: snippet._id,
+        comment: req.body.comment,
+        likes: [],
       }).save((err) => {
         if (err) return next(err);
         return res.send(req.body);
       });
     } else {
-      return res.status(403).send("Snippet of this title already exists.");
+      return res.status(404).send("Not found");
     }
   });
 });
 
-/* Update a snippet. */
+/* Update a comment. */
 router.post("/update/:identifier", verifyUser, function (req, res, next) {
-  Snippets.findByIdAndUpdate(
+  Comments.findByIdAndUpdate(
     req.params.identifier,
-    { snippet: req.body.newSnippetContent },
+    { comment: req.body.edited },
     function (err) {
       if (err) return next(err);
       return res.status(200).send("updated");
@@ -65,24 +56,24 @@ router.post("/update/:identifier", verifyUser, function (req, res, next) {
   );
 });
 
-/* Delete a snippet. */
+/* Delete a comment. */
 router.post("/delete/:identifier", verifyUser, function (req, res, next) {
-  Snippets.findByIdAndDelete(req.params.identifier, function (err) {
+  Comments.findByIdAndDelete(req.params.identifier, function (err) {
     if (err) return next(err);
     return res.status(200).send("deleted");
   });
 });
 
-/* Like a snippet. */
+/* Like a comment. */
 router.post("/like/:identifier", verifyUser, function (req, res, next) {
   const token = req.headers["x-access-token"];
   const user = jwt.decode(token);
   if (!user) return res.status(400).json("unauthorized");
 
-  Snippets.findOne({ _id: req.params.identifier }, (err, snippet) => {
+  Comments.findOne({ _id: req.params.identifier }, (err, comment) => {
     if (err) return next(err);
-    if (snippet) {
-      var likes = snippet.likes;
+    if (comment) {
+      var likes = comment.likes;
       if (likes.length === 0) {
         likes.push(user.userId);
       } else {
@@ -94,7 +85,7 @@ router.post("/like/:identifier", verifyUser, function (req, res, next) {
           likes.splice(index, 1);
         }
       }
-      Snippets.findByIdAndUpdate(
+      Comments.findByIdAndUpdate(
         req.params.identifier,
         { likes: likes },
         function (err) {
