@@ -55,6 +55,7 @@ Use some highlight library for the code snippets, React Syntax Highlighter: 2
 
 Vote posts and comments (only one vote per user): 3
 
+Extra point for UI design and use of react query?: 1
 
-Total points: 39
+Total points: 40
 
